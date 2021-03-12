@@ -20,7 +20,8 @@ endif()
 find_path(
 	TensorFlow_ROOT_DIR
 	NAMES /include/tensorflow/c/c_api.h
-	PATHS "C:/SDK/libtensorflow-gpu-windows-x86_64-1.14.0"
+    PATHS "../dependencies/libtensorflow-gpu-windows-x86_64-1.14.0"
+    "C:/lib/tensorflow/libtensorflow-gpu-windows-x86_64-1.15.0"
 )
 
 # Find include directory

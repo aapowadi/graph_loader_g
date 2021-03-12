@@ -32,7 +32,7 @@ def freeze_graph(model_dir, output_node_names):
 
     # We precise the file fullname of our freezed graph
     absolute_model_dir = "/".join(input_checkpoint.split('/')[:-1])
-    output_graph = absolute_model_dir + "/planex128_cn.pb"
+    output_graph = absolute_model_dir + "/plx128-2-13comb-100.pb"
 
     # We clear devices to allow TensorFlow to control on which device it will load operations
     clear_devices = True
@@ -63,7 +63,7 @@ def freeze_graph(model_dir, output_node_names):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_dir", type=str, default="./", help="Model folder to export")
-    parser.add_argument("--output_node_names", type=str, default="input_feed,aug_map,Reshape,Reshape_1,Add_1,Add_3",
+    parser.add_argument("--output_node_names", type=str, default="input_feed,aug_map,Reshape_1,Add_1,Add_3",
                         help="The name of the output nodes, comma separated.")
     args = parser.parse_args()
 

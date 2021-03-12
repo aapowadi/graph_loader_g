@@ -6,6 +6,7 @@
 #include <string>
 #include <chrono>
 #include <tuple>
+#include <vector>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
@@ -33,14 +34,37 @@ public:
 
 
 private:
+	struct Pt {
+		double x, y; //coordinates
+		int cluster; //no default cluster
+		double minDist; //default distance = 2
 
+		Pt() :
+			x(0.0),
+			y(0.0),
+			cluster(-1),
+			minDist(2) {}
+
+		Pt(double x, double y) :
+			x(x),
+			y(y),
+			cluster(-1),
+			minDist(2) {}
+
+		double distance(Pt p) {
+			return (p.x - x)*(p.x - x) + (p.y - y)*(p.y - y);
+		}
+	};
+	vector<int> nPoints;
 	void deleteTensor(TF_Tensor* pTensor) {
 		if (pTensor)
 			tf_utils::DeleteTensor(pTensor);
 	}
-
+	void gen_bnd_box(const cv::Mat& img, cv::Mat& bnd_img, int scale);
+	void normalizergb(const cv::Mat& img, cv::Mat& edges);
 	void loadImgData(const cv::Mat edges, vector<float_t>& im_data, vector<int64_t>& im_dims);
 	void load1chData(const cv::Mat edges, vector<float_t>& im_data, vector<int64_t>& im_dims);
+	void link1_clust(vector<Pt>* points, vector<Pt> centroids);
 	TF_Operation* getOp(TF_Graph* graph, const std::string op_name);
 
 	string _workingDirectory = "";
@@ -50,7 +74,7 @@ private:
 	bool _sessionInitialized = false;
 
 	TF_Status* _pStatus = nullptr;
-
+	int count;
 	TF_Tensor* _pInputColorTensor = nullptr;
 	TF_Tensor* _pInputSegmentedTensor = nullptr;
 	TF_Tensor* _pInputDepthTensor = nullptr;
